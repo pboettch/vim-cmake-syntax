@@ -22,7 +22,7 @@ syn region cmakeRegistry start="\[" end="]" contained oneline contains=cmakeTodo
 
 syn region cmakeGeneratorExpression start="$<" end=">" contained oneline contains=cmakeVariableValue,cmakeProperty,cmakeGeneratorExpressions,cmakeTodo
 
-syn region cmakeString start='"' end='"' contained contains=cmakeTodo,cmakeVariableValue,cmakeEscaped
+syn region cmakeString start='"' end='"' skip='\\"' contained contains=cmakeTodo,cmakeVariableValue,cmakeEscaped
 
 syn region cmakeVariableValue start="${" end="}" contained oneline contains=cmakeVariable,cmakeTodo
 
