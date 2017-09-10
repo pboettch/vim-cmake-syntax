@@ -1,7 +1,8 @@
 " Vim indent file
 " Language:     CMake (ft=cmake)
 " Author:       Andy Cedilnik <andy.cedilnik@kitware.com>
-" Maintainer:   Karthik Krishnan <karthik.krishnan@kitware.com>
+" Maintainer:   Dimitri Merejkowsky <d.merej@gmail.com>
+" Former Maintainer: Karthik Krishnan <karthik.krishnan@kitware.com>
 " Last Change:  2017 Aug 30
 "
 " Licence:      The CMake license applies to this file. See
