@@ -14,6 +14,9 @@ if exists("b:did_indent")
 endif
 let b:did_indent = 1
 
+let s:keepcpo= &cpo
+set cpo&vim
+
 setlocal et
 setlocal indentexpr=CMakeGetIndent(v:lnum)
 setlocal indentkeys+==ENDIF(,ENDFOREACH(,ENDMACRO(,ELSE(,ELSEIF(,ENDWHILE(
@@ -82,3 +85,6 @@ fun! CMakeGetIndent(lnum)
 
   return ind
 endfun
+
+let &cpo = s:keepcpo
+unlet s:keepcpo
