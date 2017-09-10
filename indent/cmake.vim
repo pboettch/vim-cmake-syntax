@@ -2,8 +2,7 @@
 " Language:     CMake (ft=cmake)
 " Author:       Andy Cedilnik <andy.cedilnik@kitware.com>
 " Maintainer:   Karthik Krishnan <karthik.krishnan@kitware.com>
-" Last Change:  $Date$
-" Version:      $Revision$
+" Last Change:  2017 Aug 30
 "
 " Licence:      The CMake license applies to this file. See
 "               https://cmake.org/licensing

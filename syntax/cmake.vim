@@ -1,4 +1,3 @@
-" vim: set nowrap:
 " Vim syntax file
 " Program:      CMake - Cross-Platform Makefile Generator
 " Version:      cmake version 3.9.20170830-ge0713
@@ -8,6 +7,7 @@
 "               Patrick Boettcher <patrick.boettcher@posteo.de>
 " Maintainer:   Dimitri Merejkowsky <d.merej@gmail.com>
 " Former Maintainer: Karthik Krishnan <karthik.krishnan@kitware.com>
+" Last Change:  2017 Aug 30
 "
 " Licence:      The CMake license applies to this file. See
 "               https://cmake.org/licensing
@@ -474,4 +474,4 @@ let b:current_syntax = "cmake"
 let &cpo = s:keepcpo
 unlet s:keepcpo
 
-"EOF"
+" vim: set nowrap:
