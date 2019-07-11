@@ -55,7 +55,7 @@ fun! CMakeGetIndent(lnum)
                     \           '\(' . cmake_regex_comment . '\)\?$'
 
   let cmake_indent_close_regex = '^' . cmake_regex_arguments .
-                    \            ')\s*' .
+                    \            '\zs)\s*' .
                     \            '\(' . cmake_regex_comment . '\)\?$'
 
   let cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\|ELSEIF\|WHILE\|FUNCTION\)\s*('
@@ -77,8 +77,17 @@ fun! CMakeGetIndent(lnum)
   if this_line =~? cmake_indent_end_regex
     let ind = ind - shiftwidth()
   endif
-  if previous_line =~? cmake_indent_close_regex
-    let ind = ind - shiftwidth()
+  " Use indent of the line with the opening parenthesis.
+  let m = matchstrpos(previous_line, cmake_indent_close_regex)
+  if !empty(m[0])
+    " Go to closing parenthesis.
+    call cursor(lnum, m[1], m[2])
+    let pairpos = searchpairpos('(', '', ')', 'bW', '', 0, 500)
+    if pairpos[0] != 0
+      let ind = indent(pairpos[0])
+    else
+      let ind = ind - shiftwidth()
+    endif
   endif
 
   return ind
