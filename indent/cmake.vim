@@ -3,7 +3,7 @@
 " Author:       Andy Cedilnik <andy.cedilnik@kitware.com>
 " Maintainer:   Dimitri Merejkowsky <d.merej@gmail.com>
 " Former Maintainer: Karthik Krishnan <karthik.krishnan@kitware.com>
-" Last Change:  2017 Aug 30
+" Last Change:  2017 Sep 24
 "
 " Licence:      The CMake license applies to this file. See
 "               https://cmake.org/licensing
@@ -14,9 +14,6 @@ if exists("b:did_indent")
 endif
 let b:did_indent = 1
 
-let s:keepcpo= &cpo
-set cpo&vim
-
 setlocal indentexpr=CMakeGetIndent(v:lnum)
 setlocal indentkeys+==ENDIF(,ENDFOREACH(,ENDMACRO(,ELSE(,ELSEIF(,ENDWHILE(
 
@@ -24,6 +21,8 @@ setlocal indentkeys+==ENDIF(,ENDFOREACH(,ENDMACRO(,ELSE(,ELSEIF(,ENDWHILE(
 if exists("*CMakeGetIndent")
   finish
 endif
+let s:keepcpo= &cpo
+set cpo&vim
 
 fun! CMakeGetIndent(lnum)
   let this_line = getline(a:lnum)
