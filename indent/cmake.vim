@@ -24,6 +24,28 @@ endif
 let s:keepcpo= &cpo
 set cpo&vim
 
+let s:or = '\|'
+" Regular expressions used by line indentation function.
+let s:cmake_regex_comment = '#.*'
+let s:cmake_regex_identifier = '[A-Za-z][A-Za-z0-9_]*'
+let s:cmake_regex_quoted = '"\([^"\\]\|\\.\)*"'
+let s:cmake_regex_arguments = '\(' . s:cmake_regex_quoted .
+                  \       s:or . '\$(' . s:cmake_regex_identifier . ')' .
+                  \       s:or . '[^()\\#"]' . s:or . '\\.' . '\)*'
+
+let s:cmake_indent_comment_line = '^\s*' . s:cmake_regex_comment
+let s:cmake_indent_blank_regex = '^\s*$'
+let s:cmake_indent_open_regex = '^\s*' . s:cmake_regex_identifier .
+                  \           '\s*(' . s:cmake_regex_arguments .
+                  \           '\(' . s:cmake_regex_comment . '\)\?$'
+
+let s:cmake_indent_close_regex = '^' . s:cmake_regex_arguments .
+                  \            '\zs)\s*' .
+                  \            '\(' . s:cmake_regex_comment . '\)\?$'
+
+let s:cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\|ELSEIF\|WHILE\|FUNCTION\)\s*('
+let s:cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\|ELSEIF\|ENDWHILE\|ENDFUNCTION\)\s*('
+
 fun! CMakeGetIndent(lnum)
   let this_line = getline(a:lnum)
 
@@ -39,46 +61,24 @@ fun! CMakeGetIndent(lnum)
 
   let ind = indent(lnum)
 
-  let or = '\|'
-  " Regular expressions used by line indentation function.
-  let cmake_regex_comment = '#.*'
-  let cmake_regex_identifier = '[A-Za-z][A-Za-z0-9_]*'
-  let cmake_regex_quoted = '"\([^"\\]\|\\.\)*"'
-  let cmake_regex_arguments = '\(' . cmake_regex_quoted .
-                    \       or . '\$(' . cmake_regex_identifier . ')' .
-                    \       or . '[^()\\#"]' . or . '\\.' . '\)*'
-
-  let cmake_indent_comment_line = '^\s*' . cmake_regex_comment
-  let cmake_indent_blank_regex = '^\s*$'
-  let cmake_indent_open_regex = '^\s*' . cmake_regex_identifier .
-                    \           '\s*(' . cmake_regex_arguments .
-                    \           '\(' . cmake_regex_comment . '\)\?$'
-
-  let cmake_indent_close_regex = '^' . cmake_regex_arguments .
-                    \            '\zs)\s*' .
-                    \            '\(' . cmake_regex_comment . '\)\?$'
-
-  let cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\|ELSEIF\|WHILE\|FUNCTION\)\s*('
-  let cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\|ELSEIF\|ENDWHILE\|ENDFUNCTION\)\s*('
-
   " Add
-  if previous_line =~? cmake_indent_comment_line " Handle comments
+  if previous_line =~? s:cmake_indent_comment_line " Handle comments
     let ind = ind
   else
-    if previous_line =~? cmake_indent_begin_regex
+    if previous_line =~? s:cmake_indent_begin_regex
       let ind = ind + shiftwidth()
     endif
-    if previous_line =~? cmake_indent_open_regex
+    if previous_line =~? s:cmake_indent_open_regex
       let ind = ind + shiftwidth()
     endif
   endif
 
   " Subtract
-  if this_line =~? cmake_indent_end_regex
+  if this_line =~? s:cmake_indent_end_regex
     let ind = ind - shiftwidth()
   endif
   " Use indent of the line with the opening parenthesis.
-  let m = matchstrpos(previous_line, cmake_indent_close_regex)
+  let m = matchstrpos(previous_line, s:cmake_indent_close_regex)
   if !empty(m[0])
     " Go to closing parenthesis.
     call cursor(lnum, m[1], m[2])
