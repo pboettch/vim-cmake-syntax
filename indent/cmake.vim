@@ -75,7 +75,11 @@ fun! CMakeGetIndent(lnum)
 	if previous_line !~? s:cmake_indent_close_regex " closing parenthesis is not on the same line
 	  call cursor(lnum, 1)
 	  let s = searchpos('(') " find first ( which is by cmake-design not a string
-	  let ind = s[1]
+	  if strlen(previous_line) == s[1] " if ( is the last char on this line, do not align with ( but use sw()
+		let ind += shiftwidth()
+	  else
+		let ind = s[1]
+	  endif
 	endif
   elseif previous_line =~? s:cmake_indent_close_regex " close parenthesis
     call cursor(lnum, strlen(previous_line))

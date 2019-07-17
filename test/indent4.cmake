@@ -23,6 +23,13 @@ HELLO
 HELLO)
 endif()
 
+if(VAR)
+set_property(
+TARGET
+HELLO
+HELLO)
+endif()
+
 message(STATUS "Hello" #[[Bracket Comment]] "second")
 
 add_custom_command() # TODO this will wrongly align to ( due to bracket-comment
