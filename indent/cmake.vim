@@ -21,6 +21,7 @@ setlocal indentkeys+==ENDIF(,ENDFOREACH(,ENDMACRO(,ELSE(,ELSEIF(,ENDWHILE(
 if exists("*CMakeGetIndent")
   finish
 endif
+
 let s:keepcpo= &cpo
 set cpo&vim
 
@@ -34,7 +35,6 @@ let s:cmake_regex_arguments = '\(' . s:cmake_regex_quoted .
                   \       s:or . '[^()\\#"]' . s:or . '\\.' . '\)*'
 
 let s:cmake_indent_comment_line = '^\s*' . s:cmake_regex_comment
-let s:cmake_indent_blank_regex = '^\s*$'
 let s:cmake_indent_open_regex = '^\s*' . s:cmake_regex_identifier .
                   \           '\s*(' . s:cmake_regex_arguments .
                   \           '\(' . s:cmake_regex_comment . '\)\?$'
@@ -49,10 +49,20 @@ let s:cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\|ELSEIF\
 fun! CMakeGetIndent(lnum)
   let this_line = getline(a:lnum)
 
-  " Find a non-blank line above the current line.
-  let lnum = a:lnum
-  let lnum = prevnonblank(lnum - 1)
-  let previous_line = getline(lnum)
+  let lnum = a:lnum - 1
+
+  " Find a non-blank/non-comment line above the current line.
+  while lnum > 0
+	let lnum = prevnonblank(lnum)
+	let previous_line = getline(lnum)
+
+	" ignore comments (# only, lua-like comment TODO)
+	if previous_line !~? s:cmake_indent_comment_line
+	  break
+	endif
+
+	let lnum -= 1
+  endwhile
 
   " Hit the start of the file, use zero indent.
   if lnum == 0
@@ -61,33 +71,24 @@ fun! CMakeGetIndent(lnum)
 
   let ind = indent(lnum)
 
-  " Add
-  if previous_line =~? s:cmake_indent_comment_line " Handle comments
-    let ind = ind
-  else
-    if previous_line =~? s:cmake_indent_begin_regex
-      let ind = ind + shiftwidth()
-    endif
-    if previous_line =~? s:cmake_indent_open_regex
-      let ind = ind + shiftwidth()
-    endif
+  if previous_line =~? s:cmake_indent_open_regex " open parenthesis
+	if previous_line !~? s:cmake_indent_close_regex " closing parenthesis is not on the same line
+	  call cursor(lnum, 1)
+	  let s = searchpos('(') " find first ( which is by cmake-design not a string
+	  let ind = s[1]
+	endif
+  elseif previous_line =~? s:cmake_indent_close_regex " close parenthesis
+    call cursor(lnum, strlen(previous_line))
+	let pairpos = searchpos(s:cmake_indent_open_regex, 'nbz')
+	if pairpos[0] != 0
+	  let ind = indent(pairpos[0])
+	endif
   endif
 
-  " Subtract
-  if this_line =~? s:cmake_indent_end_regex
+  if previous_line =~? s:cmake_indent_begin_regex " control begin block
+	let ind = ind + shiftwidth()
+  elseif this_line =~? s:cmake_indent_end_regex  " control end block
     let ind = ind - shiftwidth()
-  endif
-  " Use indent of the line with the opening parenthesis.
-  let m = matchstrpos(previous_line, s:cmake_indent_close_regex)
-  if !empty(m[0])
-    " Go to closing parenthesis.
-    call cursor(lnum, m[1], m[2])
-    let pairpos = searchpairpos('(', '', ')', 'bW', '', 0, 500)
-    if pairpos[0] != 0
-      let ind = indent(pairpos[0])
-    else
-      let ind = ind - shiftwidth()
-    endif
   endif
 
   return ind
