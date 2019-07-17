@@ -2,8 +2,15 @@
 
 TMP=$(mktemp)
 
+if [[ $1 == *"indent"* ]]
+then
+	INDENT="norm gg=G"
+else
+	INDENT="norm gg"
+fi
+
 # generate html-file with local .vimrc and local syntax highlighting and only that!
-vim -u .vimrc -n -es -c TOhtml -c "w! $TMP" -c 'qa!' $1.cmake >/dev/null 2>&1
+vim -u .vimrc -n -es -c "$INDENT" -c "w! $TMP.cmake" -c TOhtml -c "w! $TMP" -c 'qa!' $1.cmake >/dev/null 2>&1
 
 # extract the body of the html-file
 sed -i -n -e '/<body>/,$p' $TMP

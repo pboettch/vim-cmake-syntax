@@ -1,0 +1,12 @@
+<body>
+<pre id='vimCodeElement'>
+<span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span>
+             <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span>)
+<span class="Identifier">message</span>(<span class="ModeMsg">STATUS</span> <span class="Constant">&quot;Hello World&quot;</span>)
+
+
+<span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span>
+             <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span>)
+<span class="Identifier">message</span>(<span class="ModeMsg">STATUS</span> <span class="Constant">&quot;Hello World&quot;</span>)
+</pre>
+</body>
