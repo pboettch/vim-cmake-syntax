@@ -46,6 +46,10 @@ let s:cmake_indent_close_regex = '^' . s:cmake_regex_arguments .
 let s:cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\|ELSEIF\|WHILE\|FUNCTION\)\s*('
 let s:cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\|ELSEIF\|ENDWHILE\|ENDFUNCTION\)\s*('
 
+if !exists('g:cmake_indent_no_command_argument_align')
+  let g:cmake_indent_no_command_argument_align = 0
+endif
+
 fun! CMakeGetIndent(lnum)
   let this_line = getline(a:lnum)
 
@@ -74,16 +78,22 @@ fun! CMakeGetIndent(lnum)
   if previous_line =~? s:cmake_indent_open_regex " open parenthesis
 	if previous_line !~? s:cmake_indent_close_regex " closing parenthesis is not on the same line
 	  call cursor(lnum, 1)
-	  let s = searchpos('(') " find first ( which is by cmake-design not a string
-	  if strlen(previous_line) == s[1] " if ( is the last char on this line, do not align with ( but use sw()
+	  let s = searchpos('(\s*$') " find '(' with nothing or only spaces until the end of the line
+	  if s[0] == lnum
 		let ind += shiftwidth()
-	  else
-		let ind = s[1]
+	  else " an argument after the keyword
+		call cursor(lnum, 1)
+		let s = searchpos('(') " find position of first '('
+		if g:cmake_indent_no_command_argument_align == 1 " old behavior
+		  let ind += shiftwidth()
+		else
+		  let ind = s[1]
+		endif
 	  endif
 	endif
   elseif previous_line =~? s:cmake_indent_close_regex " close parenthesis
     call cursor(lnum, strlen(previous_line))
-	let pairpos = searchpos(s:cmake_indent_open_regex, 'nbz')
+	let pairpos = searchpos(s:cmake_indent_open_regex, 'nbz') " find corresponding open paren
 	if pairpos[0] != 0
 	  let ind = indent(pairpos[0])
 	endif
