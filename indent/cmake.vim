@@ -46,8 +46,8 @@ let s:cmake_indent_close_regex = '^' . s:cmake_regex_arguments .
 let s:cmake_indent_begin_regex = '^\s*\(IF\|MACRO\|FOREACH\|ELSE\|ELSEIF\|WHILE\|FUNCTION\)\s*('
 let s:cmake_indent_end_regex = '^\s*\(ENDIF\|ENDFOREACH\|ENDMACRO\|ELSE\|ELSEIF\|ENDWHILE\|ENDFUNCTION\)\s*('
 
-if !exists('g:cmake_indent_no_command_argument_align')
-  let g:cmake_indent_no_command_argument_align = 0
+if !exists('g:cmake_indent_align_command_arguments')
+  let g:cmake_indent_align_command_arguments = 0
 endif
 
 fun! CMakeGetIndent(lnum)
@@ -84,7 +84,7 @@ fun! CMakeGetIndent(lnum)
 	  else " an argument after the keyword
 		call cursor(lnum, 1)
 		let s = searchpos('(') " find position of first '('
-		if g:cmake_indent_no_command_argument_align == 1 " old behavior
+		if g:cmake_indent_align_command_arguments == 0 " old behavior
 		  let ind += shiftwidth()
 		else
 		  let ind = s[1]

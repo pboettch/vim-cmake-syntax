@@ -30,6 +30,11 @@ HELLO
 HELLO)
 endif()
 
+add_custom_command(tout # )
+#add_custom_command(
+hallo
+)
+
 message(STATUS "Hello" #[[Bracket Comment]] "second")
 
 add_custom_command() # TODO this will wrongly align to ( due to bracket-comment

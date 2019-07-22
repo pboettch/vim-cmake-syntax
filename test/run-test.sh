@@ -9,8 +9,15 @@ else
 	INDENT="norm gg"
 fi
 
+if [ -e "$1.vim" ]
+then
+	OPTION_FILE="source $1.vim"
+else
+	OPTION_FILE=""
+fi
+
 # generate html-file with local .vimrc and local syntax highlighting and only that!
-vim -u .vimrc -n -es -c "$INDENT" -c "w! $TMP.cmake" -c TOhtml -c "w! $TMP" -c 'qa!' $1.cmake >/dev/null 2>&1
+vim -u .vimrc -n -es -c "$OPTION_FILE" -c "$INDENT" -c "w! $TMP.cmake" -c TOhtml -c "w! $TMP" -c 'qa!' $1.cmake >/dev/null 2>&1
 
 # extract the body of the html-file
 sed -i -n -e '/<body>/,$p' $TMP

@@ -25,12 +25,16 @@ With Vundle
 
 ## Indentation
 
-There is also an indent file which does some intelligent alignment.
+There is also an indent file which can do some intelligent alignment.
+
+### Control-statements
 
 For control-keywords (`if`, `while`, `foreach`, `macro`, etc) it automatically adds a
 `shiftwidth()` (and substracts it for a `end`-keyword).
 
-For commands (so everything which has arguments between parenthesis `(...)`) is tries to do the following.
+### Command arguments
+
+For commands (so everything which has arguments between parenthesis `(...)`) is tries to do the following:
 
 Either it aligns all arguments on a new line in the same column as the opening parenthesis if the first argument is on the
 same line as the command:
@@ -50,7 +54,9 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 ```
 
-By setting `g:cmake_indent_no_command_argument_align` to 1 in your vimrc-file the old behavior is activated:
+This is achieved by letting `g:cmake_indent_align_command_arguments` to be 1.
+
+By setting it to 0 (the default) in your vimrc-file the standard behavior is achieved.
 
 ```cmake
 add_custom_target(TARGET name
