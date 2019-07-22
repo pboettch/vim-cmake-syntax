@@ -64,6 +64,11 @@ add_custom_target(TARGET name
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 ```
 
+### Comments
+
+By setting `g:cmake_indent_align_comments_to_first_column` to 1 (default: 0) comment will always be aligned to the
+zero column - otherwise they will aligned as normal line with a statement.
+
 ## Test
 
 There is a ever growing test-suite based on ctest located in test/

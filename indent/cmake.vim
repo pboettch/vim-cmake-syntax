@@ -50,6 +50,10 @@ if !exists('g:cmake_indent_align_command_arguments')
   let g:cmake_indent_align_command_arguments = 0
 endif
 
+if !exists('g:cmake_indent_align_comments_to_first_column')
+  let g:cmake_indent_align_comments_to_first_column = 0
+endif
+
 fun! CMakeGetIndent(lnum)
   let this_line = getline(a:lnum)
 
@@ -102,7 +106,11 @@ fun! CMakeGetIndent(lnum)
   if previous_line =~? s:cmake_indent_begin_regex " control begin block
 	let ind = ind + shiftwidth()
   elseif this_line =~? s:cmake_indent_end_regex  " control end block
-    let ind = ind - shiftwidth()
+	let ind = ind - shiftwidth()
+  elseif this_line =~? s:cmake_indent_comment_line
+	if g:cmake_indent_align_comments_to_first_column == 1
+	  let ind = 0
+	endif
   endif
 
   return ind
