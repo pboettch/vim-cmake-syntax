@@ -86,7 +86,7 @@ hi def link cmakeCommandRepeat Repeat
 hi def link cmakeComment Comment
 hi def link cmakeEnvironment Special
 hi def link cmakeEscaped Special
-hi def link cmakeGeneratorExpression WarningMsg
+hi def link cmakeGeneratorExpression Function
 hi def link cmakeGeneratorExpressions Constant
 hi def link cmakeModule Include
 hi def link cmakeProperty Constant

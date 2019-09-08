@@ -7,7 +7,7 @@
 "               Patrick Boettcher <patrick.boettcher@posteo.de>
 " Maintainer:   Dimitri Merejkowsky <d.merej@gmail.com>
 " Former Maintainer: Karthik Krishnan <karthik.krishnan@kitware.com>
-" Last Change:  2019 May 29
+" Last Change:  2019 Sep 08
 "
 " Licence:      The CMake license applies to this file. See
 "               https://cmake.org/licensing
@@ -3210,7 +3210,7 @@ hi def link cmakeCommandRepeat Repeat
 hi def link cmakeComment Comment
 hi def link cmakeEnvironment Special
 hi def link cmakeEscaped Special
-hi def link cmakeGeneratorExpression WarningMsg
+hi def link cmakeGeneratorExpression Function
 hi def link cmakeGeneratorExpressions Constant
 hi def link cmakeModule Include
 hi def link cmakeProperty Constant
