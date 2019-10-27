@@ -3121,6 +3121,7 @@ syn keyword cmakeCommand
             \ ctest_update
             \ ctest_upload
             \ define_property
+            \ doxygen_add_docs
             \ enable_language
             \ enable_testing
             \ endfunction
