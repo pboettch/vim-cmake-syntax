@@ -1484,6 +1484,7 @@ syn keyword cmakeVariable contained
             \ DOXYGEN_DOT_PATH
             \ DOXYGEN_EXCLUDE_PATTERNS
             \ DOXYGEN_EXECUTABLE
+            \ DOXYGEN_FOUND
             \ DOXYGEN_GENERATE_LATEX
             \ DOXYGEN_HAVE_DOT
             \ DOXYGEN_INPUT
@@ -1493,6 +1494,7 @@ syn keyword cmakeVariable contained
             \ DOXYGEN_PROJECT_NUMBER
             \ DOXYGEN_RECURSIVE
             \ DOXYGEN_SKIP_DOT
+            \ DOXYGEN_VERSION
             \ DOXYGEN_WARN_FORMAT
             \ ENV
             \ EXECUTABLE_OUTPUT_PATH
