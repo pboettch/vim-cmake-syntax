@@ -1478,6 +1478,22 @@ syn keyword cmakeVariable contained
             \ CTEST_UPDATE_VERSION_OVERRIDE
             \ CTEST_USE_LAUNCHERS
             \ CYGWIN
+            \ DOXYGEN_DOT_EXECUTABLE
+            \ DOXYGEN_DOT_FOUND
+            \ DOXYGEN_DOT_MULTI_TARGETS
+            \ DOXYGEN_DOT_PATH
+            \ DOXYGEN_EXCLUDE_PATTERNS
+            \ DOXYGEN_EXECUTABLE
+            \ DOXYGEN_GENERATE_LATEX
+            \ DOXYGEN_HAVE_DOT
+            \ DOXYGEN_INPUT
+            \ DOXYGEN_OUTPUT_DIRECTORY
+            \ DOXYGEN_PROJECT_BRIEF
+            \ DOXYGEN_PROJECT_NAME
+            \ DOXYGEN_PROJECT_NUMBER
+            \ DOXYGEN_RECURSIVE
+            \ DOXYGEN_SKIP_DOT
+            \ DOXYGEN_WARN_FORMAT
             \ ENV
             \ EXECUTABLE_OUTPUT_PATH
             \ GHS-MULTI
@@ -1988,6 +2004,12 @@ syn keyword cmakeKWdefine_property contained
             \ TARGET
             \ TEST
             \ VARIABLE
+
+syn keyword cmakeKWdoxygen_add_docs contained
+            \ ALL
+            \ CONMMENT
+            \ USE_STAMP_FILE
+            \ WORKING_DIRECTORY
 
 syn keyword cmakeKWenable_language contained
             \ ASM
@@ -3250,6 +3272,7 @@ hi def link cmakeKWctest_test ModeMsg
 hi def link cmakeKWctest_update ModeMsg
 hi def link cmakeKWctest_upload ModeMsg
 hi def link cmakeKWdefine_property ModeMsg
+hi def link cmakeKWdoxygen_add_docs
 hi def link cmakeKWenable_language ModeMsg
 hi def link cmakeKWenable_testing ModeMsg
 hi def link cmakeKWexec_program ModeMsg
