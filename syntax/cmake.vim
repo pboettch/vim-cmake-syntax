@@ -3272,7 +3272,7 @@ hi def link cmakeKWctest_test ModeMsg
 hi def link cmakeKWctest_update ModeMsg
 hi def link cmakeKWctest_upload ModeMsg
 hi def link cmakeKWdefine_property ModeMsg
-hi def link cmakeKWdoxygen_add_docs
+hi def link cmakeKWdoxygen_add_docs ModeMsg
 hi def link cmakeKWenable_language ModeMsg
 hi def link cmakeKWenable_testing ModeMsg
 hi def link cmakeKWexec_program ModeMsg
