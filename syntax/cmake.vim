@@ -29,13 +29,13 @@ syn region cmakeRegistry start="\[" end="]" contained oneline contains=cmakeTodo
 
 syn region cmakeGeneratorExpression start="$<" end=">" contained oneline contains=cmakeVariableValue,cmakeProperty,cmakeGeneratorExpressions,cmakeTodo
 
-syn region cmakeString start='"' end='"' contained contains=cmakeTodo,cmakeVariableValue,cmakeEscaped
+syn region cmakeString start='"' end='"' contained contains=cmakeTodo,cmakeVariableValue,cmakeEscaped,@Spell
 
 syn region cmakeVariableValue start="${" end="}" contained oneline contains=cmakeVariable,cmakeTodo,cmakeVariableValue
 
 syn region cmakeEnvironment start="$ENV{" end="}" contained oneline contains=cmakeTodo
 
-syn region cmakeArguments start="(" end=")" contains=ALLBUT,cmakeGeneratorExpressions,cmakeCommand,cmakeCommandConditional,cmakeCommandRepeat,cmakeCommandDeprecated,cmakeCommandManuallyAdded,cmakeArguments,cmakeTodo
+syn region cmakeArguments start="(" end=")" contains=ALLBUT,@Spell,cmakeGeneratorExpressions,cmakeCommand,cmakeCommandConditional,cmakeCommandRepeat,cmakeCommandDeprecated,cmakeCommandManuallyAdded,cmakeArguments,cmakeTodo
 
 syn case match
 
