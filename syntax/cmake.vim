@@ -904,6 +904,7 @@ syn keyword cmakeVariable contained
             \ CMAKE_CXX_INCLUDE_WHAT_YOU_USE
             \ CMAKE_CXX_INIT
             \ CMAKE_CXX_LIBRARY_ARCHITECTURE
+            \ CMAKE_CXX_LINKER_LAUNCHER
             \ CMAKE_CXX_LINKER_PREFERENCE
             \ CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES
             \ CMAKE_CXX_LINKER_WRAPPER_FLAG
@@ -969,6 +970,7 @@ syn keyword cmakeVariable contained
             \ CMAKE_C_INCLUDE_WHAT_YOU_USE
             \ CMAKE_C_INIT
             \ CMAKE_C_LIBRARY_ARCHITECTURE
+            \ CMAKE_C_LINKER_LAUNCHER
             \ CMAKE_C_LINKER_PREFERENCE
             \ CMAKE_C_LINKER_PREFERENCE_PROPAGATES
             \ CMAKE_C_LINKER_WRAPPER_FLAG
