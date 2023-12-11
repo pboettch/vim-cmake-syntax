@@ -6,8 +6,15 @@ TMP=$(mktemp)
 vim -u .vimrc -n -es -c TOhtml -c "w! $TMP" -c 'qa!' $1.cmake >/dev/null 2>&1
 
 # extract the body of the html-file
-sed -i -n -e '/<body>/,$p' $TMP
-sed -i '/<\/body>/q' $TMP
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+	# macOS's builtin sed expects a suffix to create backup before in-place
+	# editing. An empty suffix prevents the backup.
+	sed -i "" -n -e '/<body>/,$p' $TMP
+	sed -i "" '/<\/body>/q' $TMP
+else
+	sed -i -n -e '/<body>/,$p' $TMP
+	sed -i '/<\/body>/q' $TMP
+fi
 
 # diff with references
 diff -u $1.cmake.html.ref $TMP
