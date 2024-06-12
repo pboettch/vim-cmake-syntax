@@ -21,7 +21,7 @@ set cpo&vim
 
 syn region cmakeBracketArgument start="\[\z(=\?\|=[0-9]*\)\[" end="\]\z1\]" contains=cmakeTodo,@Spell
 
-syn region cmakeComment start="#" end="$" contains=cmakeTodo,@Spell
+syn region cmakeComment start="#" end="$" contains=cmakeTodo,@Spell,cmakeDelimitedCodeBlock_rst
 syn region cmakeBracketComment start="\[\z(=*\)\[" end="\]\z1\]" contains=cmakeTodo,@Spell
 
 syn match cmakeEscaped /\(\\\\\|\\"\|\\n\|\\t\)/ contained
@@ -4944,6 +4944,38 @@ hi def link cmakeKWwrite_basic_package_version_file ModeMsg
 hi def link cmakeKWconfigure_package_config_file_constants Constant
 
 let b:current_syntax = "cmake"
+
+""
+" Refer https://github.com/vim-pandoc/vim-pandoc-syntax/blob/4268535e1d33117a680a91160d845cd3833dfe28/syntax/pandoc.vim#L163-L195
+function! EnableEmbeds(entry)
+    " prevent embedded language syntaxes from changing 'foldmethod' 
+    if has('folding')
+        let s:foldmethod = &l:foldmethod
+        let s:foldtext = &l:foldtext     
+    endif
+
+    try
+        let s:langname = matchstr(a:entry, '^[^=]*')
+        let s:langsyntaxfile = matchstr(a:entry, '[^=]*$')
+        unlet! b:current_syntax
+        exe 'syn include @'.toupper(s:langname).' syntax/'.s:langsyntaxfile.'.vim'
+        exe 'syn region cmakeDelimitedCodeBlock_' . s:langname . ' start=/^#\[=*\[\s*\zs\.' . s:langname . ':/' .
+                   \' end=/^\ze#]=*]/ contained containedin=cmakeComment' .
+                   \' contains=@' . toupper(s:langname)
+        let b:current_syntax = 'cmake'
+    catch /E484/
+      echo "No syntax file found for '" . s:langsyntaxfile . "'"
+    endtry
+
+    if exists('s:foldmethod') && s:foldmethod !=# &l:foldmethod
+        let &l:foldmethod = s:foldmethod
+    endif
+    if exists('s:foldtext') && s:foldtext !=# &l:foldtext
+        let &l:foldtext = s:foldtext
+    endif
+endfunction
+
+call EnableEmbeds('rst')
 
 let &cpo = s:keepcpo
 unlet s:keepcpo
