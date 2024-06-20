@@ -1,0 +1,44 @@
+<body>
+<pre id='vimCodeElement'>
+<span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span>
+    <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span>)
+
+<span class="Identifier">message</span>(<span class="ModeMsg">STATUS</span> <span class="Constant">&quot;Hello World&quot;</span>)
+
+<span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span> <span class="Comment"># with comment</span>
+    <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span> <span class="Constant">&quot;()&quot;</span>)
+
+<span class="Statement">if</span>(<span class="ModeMsg">VAR</span>)
+    <span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span> <span class="Comment"># with comment</span>
+        <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span>)
+
+    <span class="Identifier">message</span>(<span class="ModeMsg">STATUS</span> <span class="Constant">&quot;Hello World&quot;</span>)
+
+    <span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span> foo <span class="ModeMsg">APPEND</span> <span class="ModeMsg">PROPERTY</span>
+        <span class="Comment"># with comment</span>
+        <span class="ModeMsg">INCLUDE_DIRECTORIES</span> <span class="Type">${BAR}</span>)
+<span class="Statement">endif</span>()
+
+<span class="Statement">if</span>(<span class="ModeMsg">VAR</span>)
+    <span class="Identifier">set_property</span>(<span class="ModeMsg">TARGET</span>
+        HELLO
+        HELLO)
+<span class="Statement">endif</span>()
+
+<span class="Statement">if</span>(<span class="ModeMsg">VAR</span>)
+    <span class="Identifier">set_property</span>(
+        <span class="ModeMsg">TARGET</span>
+        HELLO
+        HELLO)
+<span class="Statement">endif</span>()
+
+<span class="Identifier">add_custom_command</span>(tout <span class="Comment"># )</span>
+    <span class="Comment">#add_custom_command(</span>
+    hallo
+    )
+
+<span class="Identifier">message</span>(<span class="ModeMsg">STATUS</span> <span class="Constant">&quot;Hello&quot;</span> <span class="Comment">#[[Bracket Comment]]</span> <span class="Constant">&quot;second&quot;</span>)
+
+    <span class="Identifier">add_custom_command</span>() <span class="Comment"># </span><span class="TODO">TODO</span><span class="Comment"> this will wrongly align to ( due to bracket-comment</span>
+</pre>
+</body>
