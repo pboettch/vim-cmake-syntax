@@ -1,0 +1,4 @@
+[-Subroutines::ProhibitSubroutinePrototypes]
+[-InputOutput::ProhibitBarewordDirHandles]
+[-InputOutput::ProhibitBarewordFileHandles]
+[-InputOutput::ProhibitTwoArgOpen]
