@@ -9,19 +9,19 @@
 "               https://cmake.org/licensing
 "               This implies that distribution with Vim is allowed
 
-if exists("b:did_indent")
+if exists('b:did_indent')
   finish
 endif
 let b:did_indent = 1
 
-let s:keepcpo= &cpo
-set cpo&vim
+let s:keepcpo= &cpoptions
+set cpoptions&vim
 
 setlocal indentexpr=CMakeGetIndent(v:lnum)
 setlocal indentkeys+==ENDIF(,ENDFOREACH(,ENDMACRO(,ELSE(,ELSEIF(,ENDWHILE(
 
 " Only define the function once.
-if exists("*CMakeGetIndent")
+if exists('*CMakeGetIndent')
   finish
 endif
 
@@ -85,5 +85,5 @@ fun! CMakeGetIndent(lnum)
   return ind
 endfun
 
-let &cpo = s:keepcpo
+let &cpoptions = s:keepcpo
 unlet s:keepcpo

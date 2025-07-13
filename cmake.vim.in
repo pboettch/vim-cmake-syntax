@@ -13,11 +13,11 @@
 "               https://cmake.org/licensing
 "               This implies that distribution with Vim is allowed
 
-if exists("b:current_syntax")
+if exists('b:current_syntax')
   finish
 endif
-let s:keepcpo= &cpo
-set cpo&vim
+let s:keepcpo= &cpoptions
+set cpoptions&vim
 
 syn region cmakeBracketArgument start="\[\z(=\?\|=[0-9]*\)\[" end="\]\z1\]" contains=cmakeTodo,@Spell
 
@@ -122,9 +122,9 @@ hi def link cmakeKWconfigure_package_config_file ModeMsg
 hi def link cmakeKWwrite_basic_package_version_file ModeMsg
 hi def link cmakeKWconfigure_package_config_file_constants Constant
 
-let b:current_syntax = "cmake"
+let b:current_syntax = 'cmake'
 
-let &cpo = s:keepcpo
+let &cpoptions = s:keepcpo
 unlet s:keepcpo
 
 " vim: set nowrap:
