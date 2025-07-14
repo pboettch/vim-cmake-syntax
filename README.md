@@ -6,8 +6,6 @@ Original code from KitWare.
 First hosted on Github by Nicholas Hutchinson.
 Extended and modified by Patrick Boettcher and contributors
 
-Keyword update - refer to syntax/cmake.vim-header.
-
 The code of this repository is integrated in and released with CMake and is pulled
 into the official cmake-distribution "from time to time".
 
@@ -22,6 +20,15 @@ With Vundle
 
     " inside .vimrc
     Plugin 'pboettch/vim-cmake-syntax'
+
+## Updating
+
+Updating with new keywords and commands needs to be done for new releases of
+CMake. Simply ensure your cmake is newer than the previous version and run:
+
+    ./extract-upper-case.pl
+
+Please file a pull-request if the diff seems reasonable.
 
 ## Test
 
