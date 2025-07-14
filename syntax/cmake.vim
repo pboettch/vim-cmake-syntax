@@ -44,7 +44,15 @@ syn region cmakeVariableValue start="${" end="}" contained oneline contains=cmak
 
 syn region cmakeEnvironment start="$ENV{" end="}" contained oneline contains=cmakeTodo
 
-syn region cmakeArguments start="(" end=")" contains=ALLBUT,cmakeGeneratorExpressions,cmakeCommand,cmakeCommandConditional,cmakeCommandRepeat,cmakeCommandDeprecated,cmakeCommandManuallyAdded,cmakeArguments,cmakeTodo,@Spell
+syn region cmakeArguments start="(" end=")" contains=ALLBUT,@cmakeControl,cmakeGeneratorExpressions,cmakeCommand,cmakeCommandDeprecated,cmakeCommandManuallyAdded,cmakeArguments,cmakeTodo,@Spell fold
+syn region cmakeIf matchgroup=cmakeKeyword start=/^\s*\<if\>/ end=/^\s*\<endif\>/ transparent fold contains=@cmakeControl,cmakeArguments
+syn match cmakeElse /^\s*\<else\(if\)\?\>/ contained contains=NONE
+
+syn region cmakeForeach matchgroup=cmakeKeyword start=/^\s*\<foreach\>/ end=/^\s*\<endforeach\>/ transparent fold contains=@cmakeControl,cmakeArguments
+syn region cmakeWhile matchgroup=cmakeKeyword start=/^\s*\<while\>/ end=/^\s*\<endwhile\>/ transparent fold contains=@cmakeControl,cmakeArguments
+syn region cmakeFunction matchgroup=cmakeKeyword start=/^\s*\<function\>/ end=/^\s*\<endfunction\>/ transparent fold contains=@cmakeControl,cmakeArguments
+syn region cmakeBlock matchgroup=cmakeKeyword start=/^\s*\<block\>/ end=/^\s*\<endblock\>/ transparent fold contains=@cmakeControl,cmakeArguments
+syn region cmakeMacro matchgroup=cmakeKeyword start=/^\s*\<macro\>/ end=/^\s*\<endmacro\>/ transparent fold contains=@cmakeControl,cmakeArguments
 
 syn case match
 
@@ -5173,7 +5181,6 @@ syn keyword cmakeCommand
             \ add_subdirectory
             \ add_test
             \ aux_source_directory
-            \ block
             \ break
             \ build_command
             \ cmake_file_api
@@ -5204,9 +5211,6 @@ syn keyword cmakeCommand
             \ define_property
             \ enable_language
             \ enable_testing
-            \ endblock
-            \ endfunction
-            \ endmacro
             \ execute_process
             \ export
             \ file
@@ -5216,7 +5220,6 @@ syn keyword cmakeCommand
             \ find_path
             \ find_program
             \ fltk_wrap_ui
-            \ function
             \ get_cmake_property
             \ get_directory_property
             \ get_filename_component
@@ -5234,7 +5237,6 @@ syn keyword cmakeCommand
             \ list
             \ load_cache
             \ load_command
-            \ macro
             \ mark_as_advanced
             \ math
             \ message
@@ -5269,20 +5271,6 @@ syn keyword cmakeCommand
             \ variable_watch
             \ nextgroup=cmakeArguments
 
-syn keyword cmakeCommandConditional
-            \ else
-            \ elseif
-            \ endif
-            \ if
-            \ nextgroup=cmakeArguments
-
-syn keyword cmakeCommandRepeat
-            \ endforeach
-            \ endwhile
-            \ foreach
-            \ while
-            \ nextgroup=cmakeArguments
-
 syn keyword cmakeCommandDeprecated
             \ build_name
             \ exec_program
@@ -5311,14 +5299,14 @@ syn keyword cmakeTodo
 hi def link cmakeBracketArgument String
 hi def link cmakeBracketComment Comment
 hi def link cmakeCommand Function
-hi def link cmakeCommandConditional Conditional
 hi def link cmakeCommandDeprecated WarningMsg
-hi def link cmakeCommandRepeat Repeat
 hi def link cmakeComment Comment
+hi def link cmakeElse Conditional
 hi def link cmakeEnvironment Special
 hi def link cmakeEscaped Special
 hi def link cmakeGeneratorExpression WarningMsg
 hi def link cmakeGeneratorExpressions Constant
+hi def link cmakeKeyword Conditional
 hi def link cmakeModule Include
 hi def link cmakeProperty Constant
 hi def link cmakeRegistry Underlined
