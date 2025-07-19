@@ -21,7 +21,7 @@ The text does not end on a closing bracket of length 0 like ]].
 It does end in a closing bracket of length 1.
 ]==])
 
-[[ # this will make a cmake-error but defines a bracket-arguemnt
+[[ # this will make a cmake-error but defines a bracket-argument
 cmake_minimum_required(VERSION 4.0 FATAL_ERROR) # Should be string-colored
 ]]
 
