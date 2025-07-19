@@ -1,0 +1,9 @@
+<body>
+<pre id='vimCodeElement'>
+<span class="Comment">#[=[</span>
+<span class="Comment">comment</span>
+<span class="Comment">]=]</span>
+
+<span class="Folded">+--  7 lines: if (FOO)-----------------------------------------------------------------------------------------------------------------------------------------</span>
+</pre>
+</body>

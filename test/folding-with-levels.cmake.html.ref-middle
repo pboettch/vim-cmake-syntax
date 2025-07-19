@@ -1,0 +1,12 @@
+<body>
+<pre id='vimCodeElement'>
+<span class="Comment">#[=[</span>
+<span class="Comment">comment</span>
+<span class="Comment">]=]</span>
+
+<span class="Statement">if</span> (<span class="ModeMsg">FOO</span>)
+    message(<span class="Constant">&quot;Single Argument</span><span class="Special">\n</span><span class="Constant">&quot;</span>)
+<span class="Folded">+---  4 lines: if(BAR)-----------------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="Statement">endif</span>()
+</pre>
+</body>
