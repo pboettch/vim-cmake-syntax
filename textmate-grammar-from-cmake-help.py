@@ -20,7 +20,7 @@ def run_command(command: List[str]):
 
 
 def escape_list_for_regex(var_list: List[str]) -> str:
-    return "|".join(re.escape(v) for v in var_list)
+    return "|".join(re.escape(v) for v in sorted(var_list))
 
 
 class CMakeTextMateGrammarGatherer:
