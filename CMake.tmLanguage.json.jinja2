@@ -227,7 +227,7 @@
       "patterns": [
         {
           "name": "keyword.control.cmake",
-          "match": "\\b(if|elseif|while)\\b"
+          "match": "\\b(if|elseif|while|{{ escape_list_for_regex(cmake.control_commands()) }})\\b"
         },
         {
           "name": "meta.group.condition.cmake",
@@ -265,15 +265,6 @@
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             }
           ]
-        }
-      ]
-    },
-
-    {
-      "patterns": [
-        {
-          "name": "keyword.control.cmake",
-          "match": "\\b({{ escape_list_for_regex(cmake.control_commands()) }})\\b"
         }
       ]
     },
