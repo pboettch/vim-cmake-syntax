@@ -102,7 +102,7 @@ class CMakeTextMateGrammarGatherer:
         # Remove commands which have no arguments
         commands -= self.control_commands()
 
-        return commands
+        return sorted(commands)
 
     def gather_command_keywords(self, function: str):
         """
@@ -129,7 +129,7 @@ class CMakeTextMateGrammarGatherer:
         # if all_kw - keywords:
         #     print(f"possible additional keywords for {function}", all_kw - keywords)
 
-        return keywords
+        return sorted(keywords)
 
     def gather_generator_expressions(self):
         """
@@ -140,7 +140,7 @@ class CMakeTextMateGrammarGatherer:
         help_text = ' '.join(output.splitlines())
 
         # find all uppercase words after $< up to :
-        return set(re.findall(r'\$<([A-Z_]+):', help_text))
+        return sorted(set(re.findall(r'\$<([A-Z_]+):', help_text)))
 
     def gather_properties(self):
         """
@@ -159,7 +159,7 @@ class CMakeTextMateGrammarGatherer:
             else:
                 properties.add(prop)
 
-        return properties
+        return sorted(properties)
 
     def version(self):
         """
