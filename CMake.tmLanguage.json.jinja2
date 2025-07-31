@@ -1,0 +1,384 @@
+{
+  "scopeName": "source.cmake",
+  "name": "CMake {{ cmake.version() }}",
+  "fileTypes": ["cmake", "CMakeLists.txt"],
+
+  "repository": {
+    "builtin-variables": {
+      "name": "variable.language",
+      "match": "\\b({{ escape_list_for_regex(cmake.gather_variables()) }})\\b"
+    },
+
+    "boolean": {
+      "name": "constant.language.boolean.cmake",
+      "match": "\\b(?i:FALSE|NO|OFF|ON|TRUE|YES)\\b"
+    },
+
+    "variable-reference": {
+      "name": "variable.dereference.cmake",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.variable.begin.cmake"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.variable.end.cmake"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#builtin-variables"
+        },
+        {
+          "name": "variable.other",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+
+    "double-quoted-string": {
+      "name": "string.quoted.double.cmake",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.cmake"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.cmake"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#variable-reference"
+        },
+        {
+          "name": "constant.character.escape.cmake",
+          "match": "\\\\."
+        }
+      ]
+    },
+
+    "default-arguments": {
+      "patterns": [
+        {
+          "include": "#boolean"
+        },
+        {
+          "include": "#double-quoted-string"
+        },
+        {
+          "include": "#variable-reference"
+        },
+        {
+          "name": "constant.numeric.cmake",
+          "match": "\\b(0x[0-9a-fA-F]+|\\d+(\\.\\d+)?([eE][+-]?\\d+)?)\\b"
+        },
+        {
+          "name": "constant.language.null.cmake",
+          "match": "\\bNULL\\b"
+        },
+        {
+          "include": "#variable-reference"
+        },
+        {
+          "include": "#double-quoted-string"
+        },
+        {
+          "name": "variable.other",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+
+    "properties": {
+      "name": "support.type.property.cmake",
+      "match": "\\b({{ escape_list_for_regex(cmake.gather_properties()) }})\\b"
+    },
+
+    "generator-expression": {
+      "name": "entity.name.namespace.cmake",
+      "begin": "\\$\\<({{ escape_list_for_regex(cmake.gather_generator_expressions()) }}):",
+      "beginCaptures": {
+        "0": {
+          "name": "entity.name.namespace.cmake"
+        }
+      },
+      "end": "[\\>]",
+      "endCaptures": {
+        "0": {
+          "name": "entity.name.namespace.cmake"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#boolean"
+        },
+        {
+          "include": "#variable-reference"
+        },
+        {
+          "include": "#double-quoted-string"
+        },
+        {
+          "include": "#generatorExpression"
+        }
+      ]
+    },
+    "bracket-comment": {
+      "name": "comment.line.number-sign.bracket.cmake",
+      "begin": "#\\[(=*)\\[",
+      "beginCaptures": { "0": { "name": "bracket-comment.begin.cmake" } },
+      "end": "\\](=*)\\]",
+      "endCaptures": { "0": { "name": "bracket-comment.end.cmake" } }
+    },
+
+    "line-comment": {
+      "name": "comment.line.number-sign.cmake",
+      "match": "#(.*)$",
+      "captures": {
+        "1": {
+          "name": "comment.line.cmake"
+        }
+      }
+    }
+  },
+
+  "patterns": [
+
+    {% for command in cmake.gather_commands() %}
+    {% set keywords = cmake.gather_command_keywords(command) %}
+    {
+      "patterns": [
+        {
+          "name": "support.function.cmake",
+          "match": "\\b({{ command }})\\b"
+        },
+        {
+          "name": "meta.group.arguments.cmake",
+          "begin": "(?<=\\b({{ command }}))\\s*\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {% if keywords %}
+            {
+              "name": "constant.language",
+              "match": "\\b({{ escape_list_for_regex(keywords) }})\\b"
+            },
+            {% endif %}
+            {% if "propert" in command %}
+            {
+              "include": "#properties"
+            },
+            {% endif %}
+            {
+              "include": "#generator-expression"
+            },
+            {
+              "include": "#default-arguments"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
+            }
+          ]
+        }
+      ]
+    },
+    {% endfor %}
+
+    {% for module in cmake.modules() %}
+
+    {% set functions = cmake.gather_module_functions(module) %}
+    {% set keywords = cmake.gather_module_keywords(module) %}
+    {
+      "patterns": [
+        {
+          "name": "support.function.cmake",
+          "match": "(i?)\\b(?i:{{ escape_list_for_regex(functions) }})\\b"
+        },
+        {
+          "name": "meta.group.arguments.cmake",
+          "begin": "(?<=\\b(?i:{{ escape_list_for_regex(functions) }}))\\s*\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {% if keywords %}
+            {
+              "name": "constant.language",
+              "match": "\\b({{ escape_list_for_regex(keywords) }})\\b"
+            },
+            {% endif %}
+            {
+              "include": "#generator-expression"
+            },
+            {
+              "include": "#default-arguments"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
+            }
+          ]
+        }
+      ]
+    },
+    {% endfor %}
+
+    {
+      "patterns": [
+        {
+          "name": "keyword.control.cmake",
+          "match": "\\b(macro|function)\\b"
+        },
+        {
+          "name": "meta.group.control.cmake",
+          "begin": "(?<=\\b(macro|function))\\s*\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {
+              "name": "entity.name.function",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "patterns": [
+        {
+          "name": "keyword.control.cmake",
+          "match": "\\b(if|elseif|while|{{ escape_list_for_regex(cmake.control_commands()) }})\\b"
+        },
+        {
+          "name": "meta.group.condition.cmake",
+          "begin": "(?<=\\b(if|elseif|while))\\s*\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "(?=#|$)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {
+              "name": "keyword.operator.logical.cmake",
+              "match": "\\b(GREATER|ENV|LESS|POLICY|OR|TARGET|IS_NEWER_THAN|EQUAL|NOT|GREATER_EQUAL|VERSION_LESS_EQUAL|IS_WRITABLE|EXISTS|VERSION_GREATER|IS_DIRECTORY|CACHE|IS_SYMLINK|TEST|MATCHES|IS_READABLE|LESS_EQUAL|STRLESS_EQUAL|IN_LIST|PATH_EQUAL|VERSION_GREATER_EQUAL|STREQUAL|STRGREATER_EQUAL|AND|VERSION_LESS|DEFINED|COMMAND|VERSION_EQUAL|STRLESS|STRGREATER|IS_EXECUTABLE|IS_ABSOLUTE)\\b"
+            },
+            {
+              "include": "#boolean"
+            },
+            {
+              "include": "#variable-reference"
+            },
+            {
+              "include": "#builtin-variables"
+            },
+            {
+              "include": "#double-quoted-string"
+            },
+            {
+              "name": "variable.other",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "patterns": [
+        {
+          "name": "entity.name.function",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\b"
+        },
+        {
+          "name": "meta.group.condition.cmake",
+          "begin": "(?<=\\b[A-Za-z_][A-Za-z0-9_]*)\\s*\\(",
+          "begincaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "\\)",
+          "endcaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#boolean"
+            },
+            {
+              "include": "#variable-reference"
+            },
+            {
+              "include": "#double-quoted-string"
+            },
+            {
+              "name": "variable.other",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "include": "#bracket-comment"
+    },
+
+    {
+      "include": "#line-comment"
+    }
+  ]
+}
