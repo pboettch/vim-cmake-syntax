@@ -203,6 +203,55 @@
     },
     {% endfor %}
 
+    {% for module in cmake.modules() %}
+
+    {% set functions = cmake.gather_module_functions(module) %}
+    {% set keywords = cmake.gather_module_keywords(module) %}
+    {
+      "patterns": [
+        {
+          "name": "support.function.cmake",
+          "match": "(i?)\\b(?i:{{ escape_list_for_regex(functions) }})\\b"
+        },
+        {
+          "name": "meta.group.arguments.cmake",
+          "begin": "(?<=\\b(?i:{{ escape_list_for_regex(functions) }}))\\s*\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.cmake"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.cmake"
+            }
+          },
+          "patterns": [
+            {% if keywords %}
+            {
+              "name": "constant.language",
+              "match": "\\b({{ escape_list_for_regex(keywords) }})\\b"
+            },
+            {% endif %}
+            {
+              "include": "#generator-expression"
+            },
+            {
+              "include": "#default-arguments"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
+            }
+          ]
+        }
+      ]
+    },
+    {% endfor %}
+
     {
       "patterns": [
         {
@@ -323,9 +372,11 @@
         }
       ]
     },
+
     {
       "include": "#bracket-comment"
     },
+
     {
       "include": "#line-comment"
     }

@@ -41,13 +41,13 @@ class CMakeTextMateGrammarGatherer:
         """
         Extract all uppercase words from the input text.
         """
-        words = set(re.findall(r'\b[A-Z_]{2,}\b', input_text))
+        words = set(re.findall(r'\b[A-Z][A-Z_]+\b', input_text))
 
         # remove unwanted words
         words = {word for word in words if word not in \
                  ("VS", "CXX", "IDE", "NOTFOUND", "NO_", "DFOO", "DBAR", "NEW", "GNU")}
 
-        return words
+        return set(sorted(words))
 
     def gather_variables(self):
         """
@@ -179,6 +179,32 @@ class CMakeTextMateGrammarGatherer:
         """
         # TODO
         return {"ExternalProject", "FetchContent", "CMakePackageConfigHelpers"}
+
+    def gather_module_functions(self, module: str) -> Set[str]:
+        """
+        Gather functions from a specific CMake module using the `--help-module` command.
+        """
+        output = run_command([self.cmake, "--help-module", module])
+        help_text = ' '.join(output.splitlines())
+
+        # get all ReST-`.. command::` sections
+        command_pattern = re.compile(r'\.\. command::\s+([A-Za-z_]+)', re.DOTALL)
+        matches = command_pattern.findall(help_text)
+
+        if not matches:
+            raise ValueError(f"No functions found for module: {module}")
+
+        return set(sorted(matches))
+
+    def gather_module_keywords(self, module: str) -> Set[str]:
+        """
+        Gather keywords for a specific CMake module using the `--help-module` command.
+        Get all uppercase words from the help text.
+        """
+        output = run_command([self.cmake, "--help-module", module])
+        help_text = ' '.join(output.splitlines())
+
+        return self._extract_upper(help_text)
 
 
 if __name__ == "__main__":
