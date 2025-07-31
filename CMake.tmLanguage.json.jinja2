@@ -129,11 +129,8 @@
           "include": "#generatorExpression"
         }
       ]
-    }
-  },
-
-  "patterns": [
-    {
+    },
+    "bracket-comment": {
       "name": "comment.line.number-sign.bracket.cmake",
       "begin": "#\\[(=*)\\[",
       "beginCaptures": { "0": { "name": "bracket-comment.begin.cmake" } },
@@ -141,11 +138,18 @@
       "endCaptures": { "0": { "name": "bracket-comment.end.cmake" } }
     },
 
-    {
+    "line-comment": {
       "name": "comment.line.number-sign.cmake",
       "match": "#(.*)$",
-      "captures": { "1": { "name": "comment.line.cmake" } }
-    },
+      "captures": {
+        "1": {
+          "name": "comment.line.cmake"
+        }
+      }
+    }
+  },
+
+  "patterns": [
 
     {% for command in cmake.gather_commands() %}
     {% set keywords = cmake.gather_command_keywords(command) %}
@@ -186,6 +190,12 @@
             },
             {
               "include": "#default-arguments"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
             }
           ]
         }
@@ -217,6 +227,12 @@
             {
               "name": "entity.name.function",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "include": "#bracket-comment"
+            },
+            {
+              "include": "#line-comment"
             }
           ]
         }
@@ -306,6 +322,12 @@
           ]
         }
       ]
+    },
+    {
+      "include": "#bracket-comment"
+    },
+    {
+      "include": "#line-comment"
     }
   ]
 }
